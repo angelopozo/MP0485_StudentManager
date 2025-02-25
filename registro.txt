@@ -1,0 +1,11 @@
+Joan;Garcia;18;ADE;392I3K
+John;Doe;20;Computer Science;A123456
+Jane;Smith;22;Mathematics;B987654
+Alice;Johnson;19;Physics;C567890
+Bob;Williams;21;Engineering;D543210
+Emily;Brown;23;Medicine;E765432
+Michael;Davis;20;Business;F123789
+Sarah;Miller;22;Psychology;G987321
+Chris;Wilson;21;Law;H567123
+Jessica;Moore;19;Biology;I432876
+Mariano;Rajoy;70;PP;A123548
