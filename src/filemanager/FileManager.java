@@ -2,14 +2,14 @@ package filemanager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import main.Student;
-import static main.StudentRegister.brProgram;
-import static main.StudentRegister.register;
-import static main.StudentRegister.students;
 
 /**
  *
@@ -17,7 +17,35 @@ import static main.StudentRegister.students;
  */
 public class FileManager {
 
-    public static void initializaArrayList() {
+    static File register = new File(System.getProperty("user.dir") + File.separator + "registro.txt");
+    static BufferedReader brProgram = new BufferedReader(new InputStreamReader(System.in));
+    static ArrayList<Student> students = new ArrayList<>();
+
+    public static void createFile() {
+        if (!register.exists()) {
+            try {
+                register.createNewFile();
+            } catch (IOException ex) {
+                FileManager.showError(ex);
+            }
+        }
+    }
+
+    public static boolean isEmpty() {
+        try {
+            FileReader fr = new FileReader(register);
+            BufferedReader brFile = new BufferedReader(fr);
+            
+            for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
+                return false;
+            }
+        } catch (IOException ex) {
+            showError(ex);
+        }
+        return true;
+    }
+
+    public static void initializeInformationStudent() {
         try {
             FileReader fr = new FileReader(register);
             BufferedReader brFile = new BufferedReader(fr);
@@ -96,13 +124,12 @@ public class FileManager {
                         break;
                     }
                 }
-
             } while (!correctDNI);
 
             Student student = new Student(name, surname, age, grade, dni);
-
             System.out.println("Alumno creado correctamente.\n");
             students.add(student);
+            
             overWriteRegister();
         } catch (IOException ex) {
             showError(ex);
@@ -117,6 +144,7 @@ public class FileManager {
             for (int i = 0; i < students.size(); i++) {
                 bw.write(students.get(i).toString() + "\n");
             }
+            
             bw.flush();
             bw.close();
         } catch (IOException ex) {
@@ -125,50 +153,66 @@ public class FileManager {
     }
 
     public static void removeStudent() {
-        showRegister();
-        try {
-            System.out.println("Indique el DNI del Alumno que quiere eliminar: ");
-            String dni = brProgram.readLine();
+        if (!isEmpty()) {
+            showRegister();
+            try {
+                System.out.print("Indique el DNI del Alumno que quiere eliminar: ");
+                String dni = brProgram.readLine();
 
-            for (int i = 0; i < students.size(); i++) {
-                if (students.get(i).getDni().equalsIgnoreCase(dni)) {
-                    students.remove(students.get(i));
+                for (int i = 0; i < students.size(); i++) {
+                    if (students.get(i).getDni().equalsIgnoreCase(dni)) {
+                        students.remove(students.get(i));
+                    }
                 }
+
+                overWriteRegister();
+                System.out.println("El Alumno ha sido eliminado correctamente.");
+            } catch (IOException ex) {
+                showError(ex);
             }
-            overWriteRegister();
-        } catch (IOException ex) {
-            showError(ex);
+        } else {
+            System.out.println("No hay ningún alumno en el registro.\n");
         }
     }
 
     public static void showRegister() {
-        try {
-            FileReader fr = new FileReader(register);
-            BufferedReader brFile = new BufferedReader(fr);
+        if (!isEmpty()) {
+            try {
+                FileReader fr = new FileReader(register);
+                BufferedReader brFile = new BufferedReader(fr);
 
-            for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
-                System.out.println(line);
+                for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
+                    System.out.println(line);
+                }
+                
+            } catch (IOException ex) {
+                showError(ex);
             }
-        } catch (IOException ex) {
-            showError(ex);
+        } else {
+            System.out.println("No hay ningún alumno en el registro.\n");
         }
     }
 
     public static void showStudentByDNI() {
-        try {
-            System.out.print("\nIndique el DNI del Alumno que quiere buscar: ");
-            String dni = brProgram.readLine();
+        if (!isEmpty()) {
+            try {
+                System.out.print("\nIndique el DNI del Alumno que quiere buscar: ");
+                String dni = brProgram.readLine();
 
-            FileReader fr = new FileReader(register);
-            BufferedReader brFile = new BufferedReader(fr);
+                FileReader fr = new FileReader(register);
+                BufferedReader brFile = new BufferedReader(fr);
 
-            for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
-                if (line.contains(dni)) {
-                    System.out.println(line);
+                for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
+                    if (line.contains(dni)) {
+                        System.out.println(line);
+                    }
                 }
+
+            } catch (IOException ex) {
+                showError(ex);
             }
-        } catch (IOException ex) {
-            showError(ex);
+        } else {
+            System.out.println("No hay ningún alumno en el registro.\n");
         }
     }
 

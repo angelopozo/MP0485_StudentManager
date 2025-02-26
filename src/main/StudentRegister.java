@@ -1,32 +1,17 @@
 package main;
 
 import filemanager.FileManager;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  *
  * @author Angelo
  */
 public class StudentRegister {
-
-    public static BufferedReader brProgram = new BufferedReader(new InputStreamReader(System.in));
-    public static ArrayList<Student> students = new ArrayList<>();
-    public static File register = new File(System.getProperty("user.dir") + File.separator + "registro.txt");
     
     public static void main(String[] args) {
-        if (!register.exists()) {
-            try {
-                register.createNewFile();
-            } catch (IOException ex) {
-                FileManager.showError(ex);
-            }
-        }
-        
-        FileManager.initializaArrayList();
+        FileManager.createFile();
+        FileManager.initializeInformationStudent();
+
         int opc;
         do {
             opc = FileManager.menu();
@@ -47,8 +32,9 @@ public class StudentRegister {
                     System.out.println("Saliendo del programa.");
                     break;
                 default:
-                    System.out.println("Opción no disponible\n");
+                    System.out.println("Opción no disponible. Vuelve a intentarlo otra vez.\n");
             }
         } while (opc != 5);
     }
+    
 }
