@@ -1,6 +1,8 @@
 package main;
 
 import filemanager.FileManager;
+import static filemanager.FileManager.showError;
+import java.io.IOException;
 
 /**
  *
@@ -14,7 +16,7 @@ public class StudentRegister {
 
         int opc;
         do {
-            opc = FileManager.menu();
+            opc = menu();
             switch (opc) {
                 case 1:
                     FileManager.newStudent();
@@ -35,6 +37,25 @@ public class StudentRegister {
                     System.out.println("Opción no disponible. Vuelve a intentarlo otra vez.\n");
             }
         } while (opc != 5);
+    }
+    
+    public static int menu() {
+        int opc = 0;
+        try {
+            System.out.println("--- MENÚ DEL REGISTRO DE ALUMNOS ---");
+            System.out.println("1.- Agregar un nuevo alumno del registro");
+            System.out.println("2.- Mostrar la lista de alumnos registrados");
+            System.out.println("3.- Eliminar un alumno del registro");
+            System.out.println("4.- Buscar un alumno por su DNI.");
+            System.out.println("5.- Salir del programa.");
+
+            System.out.print("Seleccione una opción: ");
+            opc = Integer.parseInt(FileManager.brProgram.readLine());
+
+        } catch (IOException | NumberFormatException ex) {
+            showError(ex);
+        }
+        return opc;
     }
     
 }

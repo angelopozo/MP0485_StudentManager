@@ -18,7 +18,7 @@ import main.Student;
 public class FileManager {
 
     static File register = new File(System.getProperty("user.dir") + File.separator + "registro.txt");
-    static BufferedReader brProgram = new BufferedReader(new InputStreamReader(System.in));
+    public static BufferedReader brProgram = new BufferedReader(new InputStreamReader(System.in));
     static ArrayList<Student> students = new ArrayList<>();
 
     public static void createFile() {
@@ -36,6 +36,7 @@ public class FileManager {
             FileReader fr = new FileReader(register);
             BufferedReader brFile = new BufferedReader(fr);
             
+            //TODO to review with vicente solution
             for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
                 return false;
             }
@@ -63,25 +64,6 @@ public class FileManager {
         } catch (FileNotFoundException ex) {
             showError(ex);
         }
-    }
-
-    public static int menu() {
-        int opc = 0;
-        try {
-            System.out.println("--- MENÚ DEL REGISTRO DE ALUMNOS ---");
-            System.out.println("1.- Agregar un nuevo alumno del registro");
-            System.out.println("2.- Mostrar la lista de alumnos registrados");
-            System.out.println("3.- Eliminar un alumno del registro");
-            System.out.println("4.- Buscar un alumno por su DNI.");
-            System.out.println("5.- Salir del programa.");
-
-            System.out.print("Seleccione una opción: ");
-            opc = Integer.parseInt(brProgram.readLine());
-
-        } catch (IOException | NumberFormatException ex) {
-            showError(ex);
-        }
-        return opc;
     }
 
     public static void newStudent() {
@@ -174,7 +156,8 @@ public class FileManager {
             System.out.println("No hay ningún alumno en el registro.\n");
         }
     }
-
+    
+    //TODO to review with vicente if we have to show from arraylist or file.txt
     public static void showRegister() {
         if (!isEmpty()) {
             try {
