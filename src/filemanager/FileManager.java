@@ -1,4 +1,4 @@
-package main;
+package filemanager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import main.Student;
 import static main.StudentRegister.brProgram;
 import static main.StudentRegister.register;
 import static main.StudentRegister.students;
@@ -25,14 +26,14 @@ public class FileManager {
                 for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
                     String[] array = line.split(";");
 
-                    Student student = new Student(array[0], array[1], Integer.valueOf(array[2]), array[3], array[4]);
+                    Student student = new Student(array[0], array[1], Integer.parseInt(array[2]), array[3], array[4]);
                     students.add(student);
                 }
             } catch (IOException ex) {
-                System.err.println("Ha ocurrido un error: " + ex.getMessage());
+                showError(ex);
             }
         } catch (FileNotFoundException ex) {
-            System.err.println("Ha ocurrido un error: " + ex.getMessage());
+            showError(ex);
         }
     }
 
@@ -47,22 +48,35 @@ public class FileManager {
             System.out.println("5.- Salir del programa.");
 
             System.out.print("Seleccione una opción: ");
-            opc = Integer.valueOf(brProgram.readLine());
+            opc = Integer.parseInt(brProgram.readLine());
+
         } catch (IOException | NumberFormatException ex) {
-            System.err.println("Ha ocurrido un error: " + ex.getMessage());
+            showError(ex);
         }
         return opc;
     }
 
     public static void newStudent() {
-        System.out.println(students.get(1).getDni());
         try {
             System.out.print("\nIndique el nombre del Alumno: ");
             String name = brProgram.readLine();
             System.out.print("Indique el apellido del Alumno: ");
             String surname = brProgram.readLine();
-            System.out.print("Indique la edad del Alumno: ");
-            int age = Integer.valueOf(brProgram.readLine());
+
+            boolean correctAge = false;
+            int age = 0;
+
+            do {
+                try {
+                    System.out.print("Indique la edad del Alumno: ");
+                    age = Integer.parseInt(brProgram.readLine());
+
+                    correctAge = true;
+                } catch (IOException | NumberFormatException ex) {
+                    showError(ex);
+                }
+            } while (!correctAge);
+
             System.out.print("Indique el curso del Alumno: ");
             String grade = brProgram.readLine();
 
@@ -84,14 +98,14 @@ public class FileManager {
                 }
 
             } while (!correctDNI);
-            
+
             Student student = new Student(name, surname, age, grade, dni);
 
             System.out.println("Alumno creado correctamente.\n");
             students.add(student);
             overWriteRegister();
         } catch (IOException ex) {
-            System.err.println("Ha ocurrido un error: " + ex.getMessage());
+            showError(ex);
         }
     }
 
@@ -103,9 +117,10 @@ public class FileManager {
             for (int i = 0; i < students.size(); i++) {
                 bw.write(students.get(i).toString() + "\n");
             }
+            bw.flush();
             bw.close();
         } catch (IOException ex) {
-            System.err.println("Ha ocurrido un error: " + ex.getMessage());
+            showError(ex);
         }
     }
 
@@ -122,7 +137,7 @@ public class FileManager {
             }
             overWriteRegister();
         } catch (IOException ex) {
-            System.err.println("Ha ocurrido un error: " + ex.getMessage());
+            showError(ex);
         }
     }
 
@@ -130,20 +145,18 @@ public class FileManager {
         try {
             FileReader fr = new FileReader(register);
             BufferedReader brFile = new BufferedReader(fr);
-            
-            System.out.println("\n");
+
             for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
                 System.out.println(line);
             }
         } catch (IOException ex) {
-            System.err.println("Ha ocurrido un error: " + ex.getMessage());
+            showError(ex);
         }
-
     }
 
     public static void showStudentByDNI() {
         try {
-            System.out.println("\nIndique el DNI del Alumno que quiere buscar: ");
+            System.out.print("\nIndique el DNI del Alumno que quiere buscar: ");
             String dni = brProgram.readLine();
 
             FileReader fr = new FileReader(register);
@@ -155,7 +168,11 @@ public class FileManager {
                 }
             }
         } catch (IOException ex) {
-            System.err.println("Ha ocurrido un error: " + ex.getMessage());
+            showError(ex);
         }
+    }
+
+    public static void showError(Exception ex) {
+        System.err.println("Ha ocurrido un error: " + ex.getMessage() + "\n");
     }
 }
