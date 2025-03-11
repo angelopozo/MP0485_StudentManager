@@ -158,19 +158,11 @@ public class StudentManager {
         }
     }
 
-    //TODO to review with vicente if we have to show from arraylist or file.txt
     public static void showRegister() {
         if (!isEmpty()) {
             try {
                 FileReader fr = new FileReader(register);
                 BufferedReader brFile = new BufferedReader(fr);
-
-                /**
-                 * for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
-                 *
-                 *
-                 * System.out.println(line); }
-                 */
                 
                 String linea = "<html>\n";
                 for (Student s : students) {
@@ -179,7 +171,6 @@ public class StudentManager {
                     linea += "<p>Edad: " + s.getAge() + "</p>";
                     linea += "<p>DNI: " + s.getDni() + "</p>";
                     linea += "<p>Curso: " + s.getGrade() + "</p>";
-                    linea += "</p>";
                     linea += "</div>\n";
                 }
                 linea += "</html>";
