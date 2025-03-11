@@ -1,7 +1,7 @@
 package main;
 
-import filemanager.FileManager;
-import static filemanager.FileManager.showError;
+import filemanager.StudentManager;
+import static filemanager.StudentManager.showError;
 import java.io.IOException;
 
 /**
@@ -11,24 +11,24 @@ import java.io.IOException;
 public class StudentRegister {
     
     public static void main(String[] args) {
-        FileManager.createFile();
-        FileManager.initializeInformationStudent();
+        StudentManager.createFile();
+        StudentManager.initializeInformationStudent();
 
         int opc;
         do {
             opc = menu();
             switch (opc) {
                 case 1:
-                    FileManager.newStudent();
+                    StudentManager.newStudent();
                     break;
                 case 2:
-                    FileManager.showRegister();
+                    StudentManager.showRegister();
                     break;
                 case 3:
-                    FileManager.removeStudent();
+                    StudentManager.removeStudent();
                     break;
                 case 4:
-                    FileManager.showStudentByDNI();
+                    StudentManager.showStudentByDNI();
                     break;
                 case 5:
                     System.out.println("Saliendo del programa.");
@@ -50,7 +50,7 @@ public class StudentRegister {
             System.out.println("5.- Salir del programa.");
 
             System.out.print("Seleccione una opción: ");
-            opc = Integer.parseInt(FileManager.brProgram.readLine());
+            opc = Integer.parseInt(StudentManager.brProgram.readLine());
 
         } catch (IOException | NumberFormatException ex) {
             showError(ex);

@@ -15,7 +15,7 @@ import main.Student;
  *
  * @author Angelo
  */
-public class FileManager {
+public class StudentManager {
 
     static File register = new File(System.getProperty("user.dir") + File.separator + "registro.txt");
     public static BufferedReader brProgram = new BufferedReader(new InputStreamReader(System.in));
@@ -26,7 +26,7 @@ public class FileManager {
             try {
                 register.createNewFile();
             } catch (IOException ex) {
-                FileManager.showError(ex);
+                StudentManager.showError(ex);
             }
         }
     }
@@ -35,11 +35,12 @@ public class FileManager {
         try {
             FileReader fr = new FileReader(register);
             BufferedReader brFile = new BufferedReader(fr);
-            
+
             //TODO to review with vicente solution
             for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
                 return false;
             }
+
         } catch (IOException ex) {
             showError(ex);
         }
@@ -111,7 +112,7 @@ public class FileManager {
             Student student = new Student(name, surname, age, grade, dni);
             System.out.println("Alumno creado correctamente.\n");
             students.add(student);
-            
+
             overWriteRegister();
         } catch (IOException ex) {
             showError(ex);
@@ -126,7 +127,7 @@ public class FileManager {
             for (int i = 0; i < students.size(); i++) {
                 bw.write(students.get(i).toString() + "\n");
             }
-            
+
             bw.flush();
             bw.close();
         } catch (IOException ex) {
@@ -156,7 +157,7 @@ public class FileManager {
             System.out.println("No hay ningún alumno en el registro.\n");
         }
     }
-    
+
     //TODO to review with vicente if we have to show from arraylist or file.txt
     public static void showRegister() {
         if (!isEmpty()) {
@@ -164,10 +165,25 @@ public class FileManager {
                 FileReader fr = new FileReader(register);
                 BufferedReader brFile = new BufferedReader(fr);
 
-                for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
-                    System.out.println(line);
-                }
+                /**
+                 * for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
+                 *
+                 *
+                 * System.out.println(line); }
+                 */
                 
+                String linea = "<html>\n";
+                for (Student s : students) {
+                    linea += "<div>";
+                    linea += "<p>Nombre: " + s.getName() + " " + s.getSurname() + "</p>";
+                    linea += "<p>Edad: " + s.getAge() + "</p>";
+                    linea += "<p>DNI: " + s.getDni() + "</p>";
+                    linea += "<p>Curso: " + s.getGrade() + "</p>";
+                    linea += "</p>";
+                    linea += "</div>\n";
+                }
+                linea += "</html>";
+                System.out.println(linea);
             } catch (IOException ex) {
                 showError(ex);
             }
