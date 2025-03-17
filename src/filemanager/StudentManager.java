@@ -36,7 +36,6 @@ public class StudentManager {
             FileReader fr = new FileReader(register);
             BufferedReader brFile = new BufferedReader(fr);
 
-            //TODO to review with vicente solution
             for (String line = brFile.readLine(); line != null; line = brFile.readLine()) {
                 return false;
             }
@@ -160,24 +159,17 @@ public class StudentManager {
 
     public static void showRegister() {
         if (!isEmpty()) {
-            try {
-                FileReader fr = new FileReader(register);
-                BufferedReader brFile = new BufferedReader(fr);
-                
-                String linea = "<html>\n";
-                for (Student s : students) {
-                    linea += "<div>";
-                    linea += "<p>Nombre: " + s.getName() + " " + s.getSurname() + "</p>";
-                    linea += "<p>Edad: " + s.getAge() + "</p>";
-                    linea += "<p>DNI: " + s.getDni() + "</p>";
-                    linea += "<p>Curso: " + s.getGrade() + "</p>";
-                    linea += "</div>\n";
-                }
-                linea += "</html>";
-                System.out.println(linea);
-            } catch (IOException ex) {
-                showError(ex);
+            String linea = "<html>\n";
+            linea += "<div>\n";
+            for (Student s : students) {
+                linea += "<p>Nombre: " + s.getName() + " " + s.getSurname() + "</p>\n";
+                linea += "<p>Edad: " + s.getAge() + "</p>\n";
+                linea += "<p>DNI: " + s.getDni() + "</p>\n";
+                linea += "<p>Curso: " + s.getGrade() + "</p>\n\n";
             }
+            linea += "</div>";
+            linea += "\n</html>";
+            System.out.println(linea);
         } else {
             System.out.println("No hay ningún alumno en el registro.\n");
         }
